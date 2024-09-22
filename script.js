@@ -1,8 +1,6 @@
 // 랜덤 배경 이미지
 const backgrounds = [
-  'url(https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=2600&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)', 
-  'url(https://images.unsplash.com/photo-1505699261378-c372af38134c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)', 
-  'url(https://images.unsplash.com/photo-1503389152951-9f343605f61e?q=80&w=2998&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
+  'url(https://images.unsplash.com/photo-1484542603127-984f4f7d14cb?q=80&w=2765&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
 ];
 document.body.style.backgroundImage = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 
