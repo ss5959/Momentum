@@ -82,37 +82,49 @@ todoInput.addEventListener('keydown', (event) => {
 renderTodos();
 
 // 현재 위치 및 날씨
-function getWeather() {
+const weatherElement = document.getElementById('weather'); 
+
+function getLocationAndWeather() {
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
+      console.log('Latitude:', lat, 'Longitude:', lon);
+
       const apiKey = '587ae190500fc912aed52217cf79e939';
-      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-      
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=kr`;
+
       fetch(weatherUrl)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
+        .then(response => response.json())
+        .then(data => {
+          const temperature = data.main.temp;
+          const weatherDescription = data.weather[0].description;
+          weatherElement.textContent = `현재 온도: ${temperature}°C, 날씨: ${weatherDescription}`;
         })
-        .then((data) => {
-          const weatherElement = document.getElementById('weather');
-          const temp = data.main.temp;
-          const weather = data.weather[0].description;
-          weatherElement.textContent = `${data.name}의 날씨: ${weather}, 온도: ${temp}°C`;
-        })
-        .catch((error) => {
+        .catch(error => {
           console.error('Error fetching weather data:', error);
-          document.getElementById('weather').textContent = '날씨 정보를 불러오지 못했습니다.';
+          weatherElement.textContent = '날씨 정보를 불러올 수 없습니다.';
         });
     },
     (error) => {
       console.error('Error getting location:', error);
-      document.getElementById('weather').textContent = '위치 정보를 불러올 수 없습니다.';
-    }
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          console.log('사용자가 위치 정보 제공을 거부했습니다.');
+          break;
+        case error.POSITION_UNAVAILABLE:
+          console.log('위치 정보를 사용할 수 없습니다.');
+          break;
+        case error.TIMEOUT:
+          console.log('위치 정보를 가져오는 요청이 시간 초과되었습니다.');
+          break;
+        default:
+          console.log('위치 정보 오류가 발생했습니다.');
+      }
+      weatherElement.textContent = '위치 정보를 불러올 수 없습니다.';
+    },
+    { timeout: 30000 }
   );
 }
 
-getWeather();
+getLocationAndWeather();
